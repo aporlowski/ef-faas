@@ -274,5 +274,55 @@ def eigenfaces_upload_http(request):
     sys.stdout = old_stdout
     return result, 200, {'Content-Type': 'text/plain'}
 
+def load_model(model_name: str):
+    # bucket_name = "your-bucket-name"
+    # source_blob_name = "storage-object-name"
+    # destination_file_name = "local/path/to/file"
+
+    bucket_name = "anthony-orlowski-bucket"
+    storage_client = storage.Client()
+    bucket = storage_client.bucket(bucket_name)
+
+    model = ["_model.joblib", "_pca.joblib", "_target_names.joblib"]
+    loaded_model = []
+    for component in model:
+        component_name = model_name + component
+        blob = bucket.blob(component_name)
+        dest_filepath = get_file_path(component_name)
+        blob.download_to_filename(dest_filepath)
+        print( f"Blob {component_name} downloaded to {dest_filepath}.")
+        loaded_model.append(load(path_expand(dest_filepath)))
+
+    return loaded_model
+
+def eigenfaces_predict_http(request):
+    """
+    Make a prediction based on training configuration
+    """
+    model_name = "eigenfaces-svm"
+    image_names = "example_image.jpg"
+    image_names = image_names.split(",")
+
+    bucket_name = "anthony-orlowski-bucket"
+    storage_client = storage.Client()
+    bucket = storage_client.bucket(bucket_name)
+
+    temp_images = []
+    for image in image_names:
+        blob = bucket.blob(image)
+        dest_filepath = get_file_path(image)
+        blob.download_to_filename(dest_filepath)
+        temp_images.append(dest_filepath)
+
+    clf, pca, target_names = load_model(model_name)
+    slice_ = (slice(70, 195), slice(78, 172))
+    color = False
+    resize = 0.4
+    faces = _load_imgs(temp_images, slice_, color, resize)
+    X = faces.reshape(len(faces), -1)
+    X_pca = pca.transform(X)
+    y_pred = clf.predict(X_pca)
+    return str(target_names[y_pred]), 200, {'Content-Type': 'text/plain'}
+
 #if __name__ =='__main__':
 #    eigenfaces_monolith_http('test')

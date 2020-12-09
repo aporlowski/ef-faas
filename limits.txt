@@ -6,3 +6,7 @@
 6. not really self documenting like openapi but checkout https://cloud.google.com/endpoints/docs/openapi/get-started-cloud-functions
 7. go automatic genereate GUI, will have to roll my own
 8. vendor lock in
+9. had to learn a storage API
+10. extract moved from download funciton to train function for efficient storage and transfer of data from object storage to function instance
+instead of extracting it does have to push the data to cloud storage
+
