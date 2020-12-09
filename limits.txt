@@ -1,0 +1,8 @@
+1. Deployable memory size is limited to 2GB. Data and models that exceed this limit will not be able to execute
+2. Timeout limited to 540s. If the service can not complete in this time, it cannot be run as faas
+3. Development can be slow as environment differences between local and the cloud service can cuase errors. Re-deploying the faas to test a fix can take upto 2 mins, compared to rerunning nstantly on the local machine. yea, but so can cloudmesh...
+4. environment variables USER was not found
+5. have to understand and work with REST framework i.e. python flask request objects and response objects. FIle upload was particularly challenging.
+6. not really self documenting like openapi but checkout https://cloud.google.com/endpoints/docs/openapi/get-started-cloud-functions
+7. go automatic genereate GUI, will have to roll my own
+8. vendor lock in
