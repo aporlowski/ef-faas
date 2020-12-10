@@ -52,6 +52,40 @@ TARGETS = (
                   '1365e89b3e649747777b70e692dc1592')),
 )
 
+def store_file(dst_name,src_path):
+    bucket_name = "anthony-orlowski-bucket"
+    storage_client = storage.Client()
+    bucket = storage_client.bucket(bucket_name)
+    blob = bucket.blob(dst_name)
+    blob.upload_from_filename(src_path)
+    print(f"File {src_path} uploaded as {dst_name}.")
+
+def load_file(src_name,dst_path):
+    bucket_name = "anthony-orlowski-bucket"
+    storage_client = storage.Client()
+    bucket = storage_client.bucket(bucket_name)
+    blob = bucket.blob(src_name)
+    blob.download_to_filename(dst_path)
+    print(f"File {src_name} downloaded as {dst_path}.")
+
+def store_data(lfw_home):
+    tar_filepath=(os.path.join(tempfile.gettempdir(), "anthony.tar.gz"))
+    import tarfile
+    with tarfile.open(tar_filepath, "w:gz") as tar:
+        tar.add(lfw_home)
+    store_file('anthony.tar.gz', tar_filepath)
+
+def load_data():
+    lfw_home = '/root/scikit_learn_data/lfw_home'
+    if not os.path.exists(lfw_home):
+        os.makedirs(lfw_home)
+    tar_path = os.path.join(lfw_home, 'anthony.tar.gz')
+    load_file('anthony.tar.gz',tar_path)
+    import tarfile
+    tarfile.open(tar_path, "r:gz").extractall(path=lfw_home)
+    remove(tar_path)
+
+
 def eigenfaces_download_data_http(request):
     '''
     '''
@@ -97,9 +131,13 @@ def eigenfaces_download_data_http(request):
     import tarfile
     tarfile.open(archive_path, "r:gz").extractall(path=lfw_home)
     remove(archive_path)
+
+    store_data(lfw_home)
+    print(f'Data stored from {lfw_home}')
+
     Benchmark.Stop()
 
-    result = f'Data downloaded to {lfw_home}\n'
+    result = f'Data downloaded as {archive.filename}\n'
     old_stdout = sys.stdout
     new_stdout = io.StringIO()
     sys.stdout = new_stdout
@@ -150,7 +188,7 @@ def eigenfaces_train_http(request):
 
     # #############################################################################
     # Download the data, if not already on disk and load it as numpy arrays
-
+    load_data() # from object store
     lfw_people = fetch_lfw_people(min_faces_per_person=70, resize=0.4)
 
     # introspect the images arrays to find the shapes (for plotting)
@@ -299,6 +337,7 @@ def eigenfaces_predict_http(request):
     """
     Make a prediction based on training configuration
     """
+    Benchmark.Start()
     model_name = "eigenfaces-svm"
     image_names = "example_image.jpg"
     image_names = image_names.split(",")
@@ -322,7 +361,15 @@ def eigenfaces_predict_http(request):
     X = faces.reshape(len(faces), -1)
     X_pca = pca.transform(X)
     y_pred = clf.predict(X_pca)
-    return str(target_names[y_pred]), 200, {'Content-Type': 'text/plain'}
+    result = str(target_names[y_pred])
+    Benchmark.Stop()
+    old_stdout = sys.stdout
+    new_stdout = io.StringIO()
+    sys.stdout = new_stdout
+    Benchmark.print()
+    result += new_stdout.getvalue()
+    sys.stdout = old_stdout
+    return  result, 200, {'Content-Type': 'text/plain'}
 
 #if __name__ =='__main__':
 #    eigenfaces_monolith_http('test')
