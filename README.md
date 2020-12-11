@@ -1,4 +1,5 @@
 # Benchmarking AI Services on Function-as-a-Service Hosting
+[Anthony Orlowski](https://github.com/aporlowski/ef-faas)
 
 NOTE:
 > This document is maintained at:
@@ -172,6 +173,9 @@ This work focuses on generating benchmark results to compare to [1], thus it doe
 Our warm-start experiement is designed such that recently used containers are available, and while our results show this was the case, we do not explictily measure what percentage of warm-start instances are used. Using global instance state, one can set a flag denoting whether an instance has been previously used. Measuring what percent of requets can find this flag may be a good opportunity for better warm-start measurements. 
 
 A full cost analysis is not presented to identify the true cost efficiency that FaaS model may afford. We identified this is not trivial to measure as cost incurs both storage usage and function invoations which are priced and billed seperately. Pricint sroage further sepeartes data-at-rest charges and data network egres charges.  For a true cost analysis, a robust set of use cases including: amount of data, length of data storage, number of function invocations, and regional distribution of services need be created and compared to a similar serverful deployment. This is outside the scale of this work.
+
+## Conclusion
+In this project we  deploy and benchmark an AI service using the Google Cloud Functions function-as-a-servce platform. We study this with the intent to identify if FaaS is a viable and easy-to-use model for AI domain experts to develop and share AI services. We demonstrate that FaaS has the benefit of per-function call billing, autoscaling, and managed infastructure, but that it is limited in performance, response latency, vendor specific and complex development, platform flexibility, and requires pre-requisite knoweldge AI domain experts do not wnat to learn. We compare this to our previous work with the Generalized AI Service (GAS) Generator and show GAS generator overcomes many of these limittions.
 
 ## Acknowledgements
 We like to thank Grego von Laszesski, Richard Otten, Reilly Markowitz, Sunny Gandhi, Adam Chai, Caleb Wilson, and Geoffry C. Fox for the prior AI service generation and benchmarking that this work is based on. 
