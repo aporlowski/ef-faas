@@ -53,7 +53,7 @@ GAS generator, on the other hand, provides access to a wide range of servers (Wi
 ### Development Environment and Prerequisite Knowledge
 Developing an AI service using cloud functions comes with some prerequisite knoweldge including: utilizng speficing REST frameworks (like Flask's request objects), utilizing specific storage APIs (like google.cloud.storage), and, if desired, HTML and other GUI presentation langauges.
 
-In contrast, GAS significantly reduces these specific knowledgerequirements. As previously discussed it supports serverful deployment methods that do not require external storage services. It uses OpenAPI to automatically generate a self documenting API and web application presentation of the service hosted by a Flask web server. The developer simple provides the python function code, and the GAS generator turns it into a web app. This signifacnly increase the ability of AI domain experts to share thier work with minmal effort. 
+In contrast, GAS significantly reduces these specific knowledgerequirements. As previously discussed it supports serverful deployment methods that do not require external storage services. It uses OpenAPI to automatically generate a self documenting API and web application presentation of the service hosted by a Flask web server. The developer simple provides the python function code, and the GAS generator turns it into a web app. This signifacnly increase the ability of AI domain experts to share thier work with minmal effort. See Figure 9 in the Appendix for an example of the auto-generated GUI. In a FaaS deployment, the developer would be on the hook to make thier own. For this project I did not implement a GUI.
 
 Developing and debugging a cloud function can be difficult becuas the function has to go through a time consuming deployment process before it can be accessed and logs checked for errors and output. Google CLoud Functions does provide instructions on setting up a local development environment, but this is a more complicated development environment setup than that provided by cloudmesh-openapi [local dev]. In contrast GAS generates sevices can be locally developed directly on the same platfrom they will be hosted on.
 
@@ -500,3 +500,9 @@ python test.py 1gb
 ```
 python graph.py
 ```
+
+### Example OpenAPI Generated and HOSTED GUI for AI Service
+
+![openapi-gui](https://github.com/aporlowski/ef-faas/raw/main/images/openapi-gui.png)
+
+**Figure 9:** A screenshot of the EigenfacesSVM auto-generated GUI.
