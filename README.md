@@ -58,7 +58,6 @@ Becuase cloud functions are hosted on cloud provider managed servers, the develo
 ### Code Stability
 Because FaaS frameworks are developed and managed by commercial organizations, their code has hte potential upside of being more stable and reliable for longterm use.
 
-
 ## Experiement
 We benchmark three functions of the EigenfacesSVM service deployed using FaaS and compare it to the benchmarks from [1].We measure three function runtimes:
 
@@ -89,31 +88,37 @@ We expect functions to run faster on the variant with greater resources. Interes
 
 ## Results
 
-In Figure 
+In Figure 3 we show the runtime of the train function under the various cloud function conditions. The bars show the average of 30 trials, and the error bars show the standard deviation of the 30 trials. As expected, cold-start functions are significantly slower than warm-start functions. However, the long runtime of this function reduces amoritizes this cold-start cost better than short running functions. Surprisingly, we do not see a distinguishable improvement on functions allocated more resources. We were hoping to deploy to a additinal resource configurations to further study this, but these two configuraitons were the only two with sufficient resources at the time of hte study.
 
 ![Train FaaS](https://github.com/aporlowski/ef-faas/raw/main/images/Train_graph.png)
 
-**Figure 1:** Train function runtime for cloud function with various conditions.
+**Figure 3:** Train function runtime for cloud function with various conditions.
+
+In Figure 4 we show the runtime of the upload function under the various cloud function conditions. The bars show the average of 30 trials, and the error bars show the standard deviation of the 30 trials. As expected, cold-start functions are significantly slower than warm-start functions. From the client perspective, the cold-start and warm-start difference is especially large, as it comprises a significant poriton of the overall function runtime. Surprisingly, there is a large difference between the client warm start runtime and the server runtimes. This implies there is additional delay in handling requests besides environment setup, or our experiment did not achienve a perfect warm-instance hit rate. Unlike in Figure 3, in this experiemtn we do see an identifiable decreases in runtime that comes with increased resources. 
 
 ![Upload Faas](https://github.com/aporlowski/ef-faas/raw/main/images/Upload_graph.png)
 
-**Figure 2:** Upload function runtime for cloud function with various conditions.
+**Figure 4:** Upload function runtime for cloud function with various conditions.
+
+In Figure 5 we show the runtime of the upload function under the various cloud function conditions. The bars show the average of 30 trials, and the error bars show the standard deviation of the 30 trials. This figure provides us further confirmation of the observations made in the discussion of Figure 4.
 
 ![Predict Faas](https://github.com/aporlowski/ef-faas/raw/main/images/Predict_graph.png)
 
-**Figure 3:** Predict function runtime for cloud function with various conditions.
+**Figure 5:** Predict function runtime for cloud function with various conditions.
 
 ![Train Platforms](https://github.com/aporlowski/ef-faas/raw/main/images/Train_platforms_graph.png)
 
-**Figure 4:** Server-side train function runtime for cloud function compared with other platforms.
+In Figure 6 we show the tuntime of the train function compared to the results from [1]. We only show the server obserced runtimes as client side measurements were not measured in [1]. As predicted we peformance in the range of that measured of the two Rasbperry Pi models, and that traditional virutal machines significantly outperform the FaaS offerings. Overall, the  
+
+**Figure 6:** Server-side train function runtime for cloud function compared with other platforms.
 
 ![Upload Platforms](https://github.com/aporlowski/ef-faas/raw/main/images/Upload_platforms_graph.png)
 
-**Figure 5:** Client-side upload function runtime for cloud function compared with other platforms.
+**Figure 7:** Client-side upload function runtime for cloud function compared with other platforms.
 
 ![Predict Platforms](https://github.com/aporlowski/ef-faas/raw/main/images/Predict_platforms_graph.png)
 
-**Figure 6:** Client-side predict function runtime for cloud function compared with other platforms.
+**Figure 8:** Client-side predict function runtime for cloud function compared with other platforms.
 
 **Table 1:** Complete test measurements.
 
@@ -158,7 +163,9 @@ In Figure
 | google   | client  |        | upload  |   0.31 |   0.18 |   0.73 |  0.18 |
 
 ## Limitations
-This work focuses on generating benchmark results to compare to [1], thus it does not yet implement a fully generealized EigenfacesSVM service. There are some features of the functions that need to be completed for a more generalized service that does more than the Scikit-learn example. As it stands the functions operate on one specific data set for hte donwload function, and one specific image for the predict funciton. The upload function can upload arbitary images. Extending the code to be a full service will require additional argument passing and processing and for the predict and download funciton. This limits do not detract from the benchmark validity, simply the generalized use of the facial recognition service. 
+This work focuses on generating benchmark results to compare to [1], thus it does not yet implement a fully generealized EigenfacesSVM service. There are some features of the functions that need to be completed for a more generalized service that does more than the Scikit-learn example. As it stands the functions operate on one specific data set for hte donwload function, and one specific image for the predict funciton. The upload function can upload arbitary images. Extending the code to be a full service will require additional argument passing and processing and for the predict and download funciton. Most of the logic is present to finish these features, but it a complete implementation is not the focus of this work. This limits do not detract from the benchmark validity, simply the generalized use of the facial recognition service.
+
+Our warm-start experiement is designed such that recently used containers are available, and while our results show this was the case, we do not explictily measure what percentage of warm-start instances are used. Using global instance state, one can set a flag denoting whether an instance has been previously used. Measuring what percent of requets can find this flag may be a good opportunity for better warm-start measurements. 
 
 A full cost analysis is not presented to identify the true cost efficiency that FaaS model may afford. We identified this is not trivial to measure as cost incurs both storage usage and function invoations which are priced and billed seperately. Pricint sroage further sepeartes data-at-rest charges and data network egres charges.  For a true cost analysis, a robust set of use cases including: amount of data, length of data storage, number of function invocations, and regional distribution of services need be created and compared to a similar serverful deployment. This is outside the scale of this work.
 
