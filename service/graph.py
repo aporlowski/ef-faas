@@ -48,8 +48,8 @@ stats_df.rename(columns={'time' : 'mean', 'timer' : 'test'},inplace=True)
 stats_df['min'] = benchmark_df.groupby(['size', 'party', 'type', 'timer'], as_index=False)['time'].min().round(decimals=2)['time']
 stats_df['max'] = benchmark_df.groupby(['size', 'party', 'type', 'timer'], as_index=False)['time'].max().round(decimals=2)['time']
 stats_df['std'] = benchmark_df.groupby(['size', 'party', 'type', 'timer'], as_index=False)['time'].std().round(decimals=2)['time']
-stats_df['std'] = stats_df['std'] / 5.477225575
-stats_df['std'] = stats_df['std'].round(decimals=2)
+#stats_df['std'] = stats_df['std'] / 5.477225575
+#stats_df['std'] = stats_df['std'].round(decimals=2)
 
 #sorter = ['aws', 'azure', 'google', 'mac book', 'docker', 'pi 4', 'pi 3b+']
 #stats_df.cloud = stats_df.cloud.astype("category")
