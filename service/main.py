@@ -68,19 +68,20 @@ def load_file(src_name,dst_path):
     blob.download_to_filename(dst_path)
     print(f"File {src_name} downloaded as {dst_path}.")
 
-def store_data(lfw_home):
-    tar_filepath=(os.path.join(tempfile.gettempdir(), "anthony.tar.gz"))
+def store_data(lfw_home,id):
+    tar_filepath=(os.path.join(tempfile.gettempdir(), f"anthony{id}.tar.gz"))
     import tarfile
     with tarfile.open(tar_filepath, "w:gz") as tar:
         tar.add(lfw_home)
-    store_file('anthony.tar.gz', tar_filepath)
+    store_file(f'anthony{id}.tar.gz', tar_filepath)
+    remove(tar_filepath)
 
-def load_data():
+def load_data(id):
     lfw_home = '/root/scikit_learn_data/lfw_home'
     if not os.path.exists(lfw_home):
         os.makedirs(lfw_home)
-    tar_path = os.path.join(lfw_home, 'anthony.tar.gz')
-    load_file('anthony.tar.gz',tar_path)
+    tar_path = os.path.join(lfw_home, f'anthony{id}.tar.gz')
+    load_file(f'anthony{id}.tar.gz',tar_path)
     import tarfile
     tarfile.open(tar_path, "r:gz").extractall(path=lfw_home)
     remove(tar_path)
@@ -90,6 +91,7 @@ def eigenfaces_download_data_http(request):
     '''
     '''
     Benchmark.Start()
+    id = request.args['id']
     images_filename: str = 'lfw-funneled.tgz'
     images_url: str = 'https://ndownloader.figshare.com/files/5976015'
     images_checksum: str = 'b47c8422c8cded889dc5a13418c4bc2abbda121092b3533a83306f90d900100a'
@@ -132,7 +134,7 @@ def eigenfaces_download_data_http(request):
     tarfile.open(archive_path, "r:gz").extractall(path=lfw_home)
     remove(archive_path)
 
-    store_data(lfw_home)
+    store_data(lfw_home, id)
     print(f'Data stored from {lfw_home}')
 
     Benchmark.Stop()
@@ -175,20 +177,22 @@ def store_model(name: str, model: GridSearchCV, pca: PCA, target_names: ndarray)
         print(
             "File {} uploaded as {}.".format(
                 path, name))
+        remove(path)
 
-def eigenfaces_train_http(request):
+def eigenfaces_train_http4(request):
     """
         run eigenfaces_svm example
         :return type: str
     """
     # print(__doc__)
     Benchmark.Start()
+    id = request.args['id']
     # Display progress logs on stdout
     logging.basicConfig(level=logging.INFO, format='%(asctime)s %(message)s')
 
     # #############################################################################
     # Download the data, if not already on disk and load it as numpy arrays
-    load_data() # from object store
+    load_data(id) # from object store
     lfw_people = fetch_lfw_people(min_faces_per_person=70, resize=0.4)
 
     # introspect the images arrays to find the shapes (for plotting)
@@ -262,7 +266,7 @@ def eigenfaces_train_http(request):
     result += "%s\n" % str(classification_report(y_test, y_pred, target_names=target_names))
     result += "%s\n" % str(confusion_matrix(y_test, y_pred, labels=range(n_classes)))
 
-    store_model("eigenfaces-svm", clf, pca, target_names)
+    store_model(f"eigenfaces-svm{id}", clf, pca, target_names)
 
     Benchmark.Stop()
     old_stdout = sys.stdout
@@ -280,8 +284,9 @@ def get_file_path(filename):
     file_name = secure_filename(filename)
     return os.path.join(tempfile.gettempdir(), file_name)
 
-def eigenfaces_upload_http(request):
+def eigenfaces_upload_http4(request):
     Benchmark.Start()
+    id = request.args['id']
     bucket_name = "anthony-orlowski-bucket"
     storage_client = storage.Client()
     bucket = storage_client.bucket(bucket_name)
@@ -294,6 +299,7 @@ def eigenfaces_upload_http(request):
     data = request.form.to_dict()
     files = request.files.to_dict()
     for file_name, file in files.items():
+        file_name = f"{id}{file_name}"
         filepath=get_file_path(file_name)
         file.save(filepath)
         print('local save upload file: %s' % file_name)
@@ -330,16 +336,19 @@ def load_model(model_name: str):
         blob.download_to_filename(dest_filepath)
         print( f"Blob {component_name} downloaded to {dest_filepath}.")
         loaded_model.append(load(path_expand(dest_filepath)))
+        remove(dest_filepath)
 
     return loaded_model
 
-def eigenfaces_predict_http(request):
+def eigenfaces_predict_http4(request):
     """
     Make a prediction based on training configuration
     """
     Benchmark.Start()
-    model_name = "eigenfaces-svm"
-    image_names = "example_image.jpg"
+    id = request.args['id']
+
+    model_name = f"eigenfaces-svm{id}"
+    image_names = f"{id}example_image.jpg"
     image_names = image_names.split(",")
 
     bucket_name = "anthony-orlowski-bucket"
