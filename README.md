@@ -1,4 +1,4 @@
-# Benchmarking AI Services using Function-as-a-Service Hosting
+# Benchmarking AI Services Using Function-as-a-Service Hosting
 [Anthony Orlowski](https://github.com/aporlowski/ef-faas)
 
 NOTE:
