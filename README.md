@@ -31,13 +31,16 @@ Cloud functions are a part of the serverless computing model in which cloud prov
 In this section I will disucss advantages and disadvantages of developing and deplouing the AI service with both the GAS generator and FaaS. 
 
 ### Platform Flexibility
-Becuase the cloud functions are stateless, external storage solutions, such as cloud object storage, are required to store and share state functions. Because each cloud provider offeres thier own flavor of FaaS and storage solutions, choosing to use a FaaS model for a stateful application limits portability of the service code to other platforms. In the EigenfacesSVM example stateful data included the training data, the model after being trained, and images uploaded for label prediciton. Each of these objects is stored in Google Cloud Storage so the dependent functions can download them when invoked. When trying to port this code to another platform, the delovper would need to learn and reimplement that platform's specific storage API, or pay the higher cost (monetary and network latency) to continue using storage services from an external seperate provider.
+Becuase the cloud functions are stateless, external storage solutions, such as cloud object storage, are required to store and share state across functions. Because each cloud provider offeres thier own flavor of FaaS and storage solutions, choosing to use a FaaS model for a stateful application limits portability of the service code to other platforms. In the EigenfacesSVM example stateful data included the training data, the model after being trained, and images uploaded for label prediciton. Each of these objects is stored in Google Cloud Storage so the dependent functions can download them when invoked. When trying to port this code to another platform, the delovper would need to learn and reimplement that platform's specific storage API, or pay the higher cost (monetary and network latency) to continue using storage services from an external seperate provider.
 
-In contrast to cloud funcitons, GAS generator can support a more traditional serverful model where state is stored on the local OS file system or a locally deployed database. With the GAS generator service code can be written once and deploye don any platform that supports cloudmesh-openapi and ther services dependencies. In takes a similar amount of time to develop an AI service using a FaaS model as it does to use the GAS generator to deploy an AI service to a wide range of supported platforms.
+In contrast to cloud funcitons, GAS generator can support a more traditional serverful model where state is stored on the local OS file system or a locally deployed database. With the GAS generator service code can be written once and deploye don any platform that supports cloudmesh-openapi and ther services dependencies. In takes a similar amount of time to develop an AI service using a FaaS model as it does to use the GAS generator to deploy an AI service to a wide range of supported platforms. This provides the developer flexibility to migrate thier service to an appropriate platform as needed, where FaaS, without extra effort, limits the use case to one particular cloud provider.
 
+FaaS platforms also come with limited resources compared to the wide arrange of platforms supported by CLoudmesh-Openapi. Google Cloud functions currently limits developers to 2048MB of memory, a 2.4 Ghz equivalent processor, and a maximum of 540 seconds for funciton runtime [pricing]. While this was suitable for our example, it will severly lmint the amount ability of FaaS to be used for more expansive AI models. Google has advertised an incrase to 4096MB of memory with 4.8 Ghz quiavlanet process, but at the time of writing we were unable to succesffuly deplot a fucntion to those target resources.
 
+GAS generator, on the other hand, provides access to a wide range of servers (Windows, MacOS, Linux), IoT (Rasbian OS), and container platforms (Docker, Kubernetes) which will allow AI developers to target a platform best suited for thier needs. 
 
 ### Development Environment and Prerequisite Knowledge
+Developing an AI service using cloud functions comes with some prerequisite knoweldge including: utilizng speficing REST frameworks (like Flask's request objects), utilizing specific storage APIs (like google.cloud.storage), and if desired 
 
 ### Cost
 
@@ -129,6 +132,8 @@ The
 ## Acknowledgements
 
 ## References
+
+[pricing] https://cloud.google.com/functions/pricing
 
 ## Appendix
 
