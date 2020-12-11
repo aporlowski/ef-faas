@@ -40,26 +40,52 @@ FaaS platforms also come with limited resources compared to the wide arrange of 
 GAS generator, on the other hand, provides access to a wide range of servers (Windows, MacOS, Linux), IoT (Rasbian OS), and container platforms (Docker, Kubernetes) which will allow AI developers to target a platform best suited for thier needs. 
 
 ### Development Environment and Prerequisite Knowledge
-Developing an AI service using cloud functions comes with some prerequisite knoweldge including: utilizng speficing REST frameworks (like Flask's request objects), utilizing specific storage APIs (like google.cloud.storage), and if desired 
+Developing an AI service using cloud functions comes with some prerequisite knoweldge including: utilizng speficing REST frameworks (like Flask's request objects), utilizing specific storage APIs (like google.cloud.storage), and, if desired, HTML and other GUI presentation langauges.
+
+In contrast, GAS significantly reduces these specific knowledgerequirements. As previously discussed it supports serverful deployment methods that do not require external storage services. It uses OpenAPI to automatically generate a self documenting API and web application presentation of the service hosted by a Flask web server. The developer simple provides the python function code, and the GAS generator turns it into a web app. This signifacnly increase the ability of AI domain experts to share thier work with minmal effort. 
+
+Developing and debugging a cloud function can be difficult becuas the function has to go through a time consuming deployment process before it can be accessed and logs checked for errors and output. Google CLoud Functions does provide instructions on setting up a local development environment, but this is a more complicated development environment setup than that provided by cloudmesh-openapi [local dev]. In contrast GAS generates sevices can be locally developed directly on the same platfrom they will be hosted on.
 
 ### Cost
+A main advantage for FaaS is the pricing scheme. The AI service is only charged for the runtime of the function and the long-term storage of any backing data. This provides domain experts a cost efficient way to share thier service, particularly if it is infrequently used. GAS generated services provide pricing flexibility by targeting multiple platforms such as cloud virtual machiens and low cost IoT devices.
 
 ### Scaling
+FaaS can autoscale based on observed usage. GAS generated services leaves it to the developer to scale the service with further infastructure deployments.
 
 ### Infastructure Management
+Becuase cloud functions are hosted on cloud provider managed servers, the developer does not need to concern themselves deploying and running infastructure. GAS generated services leaves it to the developer to ensure the platform is managed and secured.
 
+### Code Stability
+Because FaaS frameworks are developed and managed by commercial organizations, their code has hte potential upside of being more stable and reliable for longterm use.
 
-The 
-1.vendor specific development
-2. rest knowledge
-3. cloud storage
-4 more complicated development/testing due to having to deploy the function and check logs for errors
-5. No auto-generated GUI with self documenting from OpenAPI 
-6. limited resources (4GB max, 540s max runtime, no GPU).
-
-1) only chaged per function use + data storage. 2) Auto-scaling  3) I expect codebase to be more stable 4) no infastructure management. Becuase cloud functions are hosted on cloud provider managed servers, the developer does not need to concern themselves deploying and running infastructure. Compared to GAS
 
 ## Experiement
+We benchmark three functions of the EigenfacesSVM service deployed using FaaS and compare it to the benchmarks from [1].We measure three function runtimes:
+
+- **Train** measures the runtime to train the EigenfacesSVM model and store it in cloud storage for future use
+- **Upload** measures the runtime to upload an image and store it in cloud storage for future use
+- **Predict** measure the runtime to download an image from cloud storage, load the AI model, and run a prediction on the image
+
+We measure these functions from two different perspectices:
+
+- **Client** This is the function runtime from the remote client
+- **Server** This is the funciton runtime as measured directly on the server directly within the funciton
+
+We measure runtimes using the cloudmesh.common.Benchmark utility. In the case of client measurement, we can measure this in our test python program. In the case of server measurement, we run the benchmark locall within the function on the server, and return its results in the HTTP response. We expect the client runtime to be slower than the server runtime to account for both network round-trip-times, and the amount of time it takes to prepare an instance for function execution. 
+
+Because cloud functions are epehmeral we conduct two tests. One in which the majority of instances are cold started, and a second where warm-start instances are already running. We constructed this test by first deploying a new function, ensuring there was only one instance ruunning, and then conducting 30 requets in parallel. The remaining 29 requetes will incur a cold-start situation. Immediately following the completiong of the first test we run an additional 30 requetse to tray and capture warm-start instances. Thus theare two conditions cloud function instances are captured in:
+
+- **Cold-start** A maixmum of 1 instance is running before 30 parallel requests
+- **Warm-start** This test of 30 parallel requests runs immedialy upon the competion of the cold-start test
+
+From the perspective of the remote client, we expect the runtime of hte cold-start functions to be signican longer becuas the cloud provider must first prepare a containe rand initialize the function enivornment before it can be run. We expect warm-start function invocations to be significantly faster. From the server side perspective we expect the cold-start and warm-start function times to be similar, as the timer is not running during instance setup.
+
+Finally, we measure two seperate cloud function sizes to see if an increase in resources imrproves performance. Google cloud functions has set resource configurations [pricing]. We determined we had a minimum meory requirement of 1GB, so were only able to test 1GB and 2GB variations. 4GB variations are advertised, but we were not succesffully able to deploy to that target configuration on the us-east1 region at time of writing. Thus there are two resource variants:
+
+- **1gb** Provides 1024MB of memory and a 1.4GHz processor
+- **2gb** Provides 2048MB of memory and a 2.4GHz processor
+
+We expect functions to run faster on the variant with greater resources. Interestingly, we identify that these resources are similar in quantity to those used by Rasberry Pi's from [1], and we are curios to see how thier performance measures up.
 
 ## Results
 
@@ -129,11 +155,14 @@ The
 | azure    | client  |        | upload  |   0.32 |   0.15 |   0.5  |  0.15 |
 | google   | client  |        | upload  |   0.31 |   0.18 |   0.73 |  0.18 |
 
+## Limitations
+
 ## Acknowledgements
 
 ## References
 
 [pricing] https://cloud.google.com/functions/pricing
+[local dev] https://cloud.google.com/functions/docs/running/overview
 
 ## Appendix
 
