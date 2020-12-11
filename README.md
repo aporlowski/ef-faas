@@ -160,6 +160,8 @@ In Figure
 ## Limitations
 This work focuses on generating benchmark results to compare to [1], thus it does not yet implement a fully generealized EigenfacesSVM service. There are some features of the functions that need to be completed for a more generalized service that does more than the Scikit-learn example. As it stands the functions operate on one specific data set for hte donwload function, and one specific image for the predict funciton. The upload function can upload arbitary images. Extending the code to be a full service will require additional argument passing and processing and for the predict and download funciton. This limits do not detract from the benchmark validity, simply the generalized use of the facial recognition service. 
 
+A full cost analysis is not presented to identify the true cost efficiency that FaaS model may afford. We identified this is not trivial to measure as cost incurs both storage usage and function invoations which are priced and billed seperately. Pricint sroage further sepeartes data-at-rest charges and data network egres charges.  For a true cost analysis, a robust set of use cases including: amount of data, length of data storage, number of function invocations, and regional distribution of services need be created and compared to a similar serverful deployment. This is outside the scale of this work.
+
 ## Acknowledgements
 We like to thank Grego von Laszesski, Richard Otten, Reilly Markowitz, Sunny Gandhi, Adam Chai, Caleb Wilson, and Geoffry C. Fox for the prior AI service generation and benchmarking that this work is based on. 
 
