@@ -28,7 +28,7 @@ In Figure 1 we show an AI service consisting of four functions. These functions 
 
 ![Architecture-openapi-1](https://github.com/aporlowski/ef-faas/raw/main/images/architecture-openapi-1.png)
 
-**Figure 1:** A client running an AI service workflow, generated and hosted by Cloudmesh OpenAPI, on a cloud provider virtual machine. Requests for each function invocation are made using standard HTTP request methods including function arguments.
+**Figure 1:** A client running an AI service workflow, generated and hosted by Cloudmesh OpenAPI, on a cloud provider virtual machine. Requests for each function invocation are made using standard HTTP request methods including function arguments [1].
 
 ### Serverless AI Service Hosting on Google Cloud Functions
 In figure 2 we show athe same AI service running using a FaaS platform. The cloud provider implements each function as a container. These functions are ephemeral, and not dircetly addressable, so they require an external storage platform to share state. The remote client interacts with the four functions using RESTful services. When a remote client requets a function, the cloud provider starts a container to host the function instances and initializes the execution environemnt before running the function. In some cases recently used intances can be reused if they have not yet been shutdown by the autoscaling algorithm. The cloud provider automatically creates new function instances to meet demand. Unlike a serverful hosting model, a remote client will interact with several differnt containers during the AI service workflow.
