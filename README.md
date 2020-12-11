@@ -21,11 +21,26 @@ In [1] we adapted the EigenfacesSVM model from Scikit-learn to be a set of four 
 Cloud functions are a part of the serverless computing model in which cloud provider's offer managed and autoscaling execution environments for customers to deploy thier code. By providing managed infastructure, cloud providers reduce the demands on developers to deploy and maintain infastructure. In the case of AI domain experts trying to deploy a Cloud functions provide extra fine grained billing where customers are only chrged for the execution of the function. This contrasts traditional VM pricing where customers are charged per hour the machine is on regardles if the encapsulated service is being used or not. Providers accomplish this by standing-up and deploying customer code into a leightweight container on demand. Each deployed container is an instance, and hte cloud provider can scale the number of instances running based on the observed demand. Because cloud function instances are ephemeral, cloud functions are best suited for stateless and imdepotent operations. If state is needed to be saved or shared between instances, then they will have to interface through a storage solution such as cloud object storage. Additionally, cloud functions are not directly addressable, so a client cannot attempt to communicate with a specific instance.  
 
 ## Architecture
+In this section wed discuss the two different deployment models used for the EigenfacesSVM AI service. The first is a more tradtional serverful deployment method utilizing Cloudmesh-openapi to generate and host the AI service on a target platfrom. The second is a function-as-a-service deployment which is the development focus of this project. 
 
 ### Serverful AI Service Hosting using Cloudmesh-Openapi
+In Figure 1 we show an AI service consisting of four functions. These functions are generated and hosted on any platform that Cloudmesh-openapi supports. In this example, we show Cloudmesh-openapi running on a traditional cloud virtual machine. The remote client interacts with the four functions that are exposed as RESTful services. All application state is stored on the local platform and each function invocation is handled by the same server.
+
+![Architecture-openapi-1](https://github.com/aporlowski/ef-faas/raw/main/images/architecture-openapi-1.png)
+
+**Figure 1:** A client running an AI service workflow, generated and hosted by Cloudmesh OpenAPI, on a cloud provider virtual machine. Requests for each function invocation are made using standard HTTP request methods including function arguments.
 
 ### Serverless AI Service Hosting on Google Cloud Functions
+In figure 2 we show athe same AI service running using a FaaS platform. The cloud provider implements each function as a container. These functions are ephemeral, and not dircetly addressable, so they require an external storage platform to share state. The remote client interacts with the four functions using RESTful services. When a remote client requets a function, the cloud provider starts a container to host the function instances and initializes the execution environemnt before running the function. In some cases recently used intances can be reused if they have not yet been shutdown by the autoscaling algorithm. The cloud provider automatically creates new function instances to meet demand. Unlike a serverful hosting model, a remote client will interact with several differnt containers during the AI service workflow.
 
+![Architecture-faas](https://github.com/aporlowski/ef-faas/raw/main/images/architecture-faas.png)
+
+**Figure 1:** A client running an AI service workflow, hosted as a FaaS.
+
+
+![Train FaaS](https://github.com/aporlowski/ef-faas/raw/main/images/Train_graph.png)
+
+**Figure 3:** Train function runtime for cloud function with various conditions.
 
 ## Lessons Learned from Development and Deployment
 
