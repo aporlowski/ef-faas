@@ -35,12 +35,7 @@ In figure 2 we show athe same AI service running using a FaaS platform. The clou
 
 ![Architecture-faas](https://github.com/aporlowski/ef-faas/raw/main/images/architecture-faas.png)
 
-**Figure 1:** A client running an AI service workflow, hosted as a FaaS.
-
-
-![Train FaaS](https://github.com/aporlowski/ef-faas/raw/main/images/Train_graph.png)
-
-**Figure 3:** Train function runtime for cloud function with various conditions.
+**Figure 2:** A client running an AI service workflow, hosted as a FaaS.
 
 ## Lessons Learned from Development and Deployment
 
