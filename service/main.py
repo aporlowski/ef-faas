@@ -179,7 +179,7 @@ def store_model(name: str, model: GridSearchCV, pca: PCA, target_names: ndarray)
                 path, name))
         remove(path)
 
-def eigenfaces_train_http4(request):
+def eigenfaces_train_http(request):
     """
         run eigenfaces_svm example
         :return type: str
@@ -284,7 +284,7 @@ def get_file_path(filename):
     file_name = secure_filename(filename)
     return os.path.join(tempfile.gettempdir(), file_name)
 
-def eigenfaces_upload_http4(request):
+def eigenfaces_upload_http(request):
     Benchmark.Start()
     id = request.args['id']
     bucket_name = "anthony-orlowski-bucket"
@@ -340,7 +340,7 @@ def load_model(model_name: str):
 
     return loaded_model
 
-def eigenfaces_predict_http4(request):
+def eigenfaces_predict_http(request):
     """
     Make a prediction based on training configuration
     """

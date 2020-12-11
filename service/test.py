@@ -28,7 +28,7 @@ def test_train(args):
     HEADING()
     Benchmark.Start()
     params = {'id': str(id)}
-    r = requests.get(f"https://us-east1-anthony-orlowski.cloudfunctions.net/eigenfaces_train_http3", params=params)
+    r = requests.get(f"https://us-east1-anthony-orlowski.cloudfunctions.net/eigenfaces_train_http", params=params)
     Benchmark.Stop()
     assert r.status_code == 200
     with io.open(server_file, 'a') as f:
@@ -44,7 +44,7 @@ def test_upload(args):
     Benchmark.Start()
     params = {'id': str(id)}
     files = {'example_image.jpg': open('example_image.jpg', 'rb')}
-    r = requests.post(url=f"https://us-east1-anthony-orlowski.cloudfunctions.net/eigenfaces_upload_http3", files=files, params=params)
+    r = requests.post(url=f"https://us-east1-anthony-orlowski.cloudfunctions.net/eigenfaces_upload_http", files=files, params=params)
     Benchmark.Stop()
     assert r.status_code == 200
     with io.open(server_file, 'a') as f:
@@ -59,7 +59,7 @@ def test_predict(args):
     HEADING()
     Benchmark.Start()
     params = {'id': str(id)}
-    r = requests.get(f"https://us-east1-anthony-orlowski.cloudfunctions.net/eigenfaces_predict_http3", params=params)
+    r = requests.get(f"https://us-east1-anthony-orlowski.cloudfunctions.net/eigenfaces_predict_http", params=params)
     Benchmark.Stop()
     assert r.status_code == 200
     with io.open(server_file, 'a') as f:
