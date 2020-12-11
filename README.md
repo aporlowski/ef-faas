@@ -217,7 +217,7 @@ gcloud functions deploy eigenfaces_predict_http --set-env-vars USER=benchmark --
 #### Interact With Functions
 
 ```
-curl https://us-east1-anthony-orlowski.cloudfunctions.net/eigenfaces_download_data_http
+curl https://us-east1-anthony-orlowski.cloudfunctions.net/eigenfaces_download_data_http?id=1
 ```
 ```
 Data downloaded as lfw-funneled.tgz
@@ -273,22 +273,124 @@ Data downloaded as lfw-funneled.tgz
 # csv,timer,status,time,sum,start,tag,uname.node,user,uname.system,platform.version
 # csv,main/eigenfaces_download_data_http,ok,97.143,97.143,2020-12-11 23:00:53,,localhost,benchmark,Linux,#1 SMP Sun Jan 10 15:06:54 PST 2016
 ```
-curl https://us-east1-anthony-orlowski.cloudfunctions.net/eigenfaces_train_http
+```
+curl https://us-east1-anthony-orlowski.cloudfunctions.net/eigenfaces_train_http?id=1
 ```
 ```
 
 ```
 ```
-curl -F example_image.jpg=@example_image.jpg  https://us-east1-anthony-orlowski.cloudfunctions.net/eigenfaces_upload_http
+curl -F example_image.jpg=@example_image.jpg  https://us-east1-anthony-orlowski.cloudfunctions.net/eigenfaces_upload_http?id=1
 ```
 ```
+File 1example_image.jpg uploaded.
 
-```
-```
-curl https://us-east1-anthony-orlowski.cloudfunctions.net/eigenfaces_predict_http
-```
-```
++---------------------+------------------------------------------------------------------+
+| Attribute           | Value                                                            |
+|---------------------+------------------------------------------------------------------|
+| BUG_REPORT_URL      | "https://bugs.launchpad.net/ubuntu/"                             |
+| DISTRIB_CODENAME    | bionic                                                           |
+| DISTRIB_DESCRIPTION | "Ubuntu 18.04.5 LTS"                                             |
+| DISTRIB_ID          | Ubuntu                                                           |
+| DISTRIB_RELEASE     | 18.04                                                            |
+| HOME_URL            | "https://www.ubuntu.com/"                                        |
+| ID                  | ubuntu                                                           |
+| ID_LIKE             | debian                                                           |
+| NAME                | "Ubuntu"                                                         |
+| PRETTY_NAME         | "Ubuntu 18.04.5 LTS"                                             |
+| PRIVACY_POLICY_URL  | "https://www.ubuntu.com/legal/terms-and-policies/privacy-policy" |
+| SUPPORT_URL         | "https://help.ubuntu.com/"                                       |
+| UBUNTU_CODENAME     | bionic                                                           |
+| VERSION             | "18.04.5 LTS (Bionic Beaver)"                                    |
+| VERSION_CODENAME    | bionic                                                           |
+| VERSION_ID          | "18.04"                                                          |
+| cpu_count           | 2                                                                |
+| mem.active          | 150.3 MiB                                                        |
+| mem.available       | 1.8 GiB                                                          |
+| mem.free            | 1.8 GiB                                                          |
+| mem.inactive        | 18.5 MiB                                                         |
+| mem.percent         | 8.2 %                                                            |
+| mem.total           | 2.0 GiB                                                          |
+| mem.used            | 131.8 MiB                                                        |
+| platform.version    | #1 SMP Sun Jan 10 15:06:54 PST 2016                              |
+| python              | 3.8.5 (default, Sep 14 2020, 07:13:57)                           |
+|                     | [GCC 7.5.0]                                                      |
+| python.pip          | 20.1.1                                                           |
+| python.version      | 3.8.5                                                            |
+| sys.platform        | linux                                                            |
+| uname.machine       | x86_64                                                           |
+| uname.node          | localhost                                                        |
+| uname.processor     | x86_64                                                           |
+| uname.release       | 4.4.0                                                            |
+| uname.system        | Linux                                                            |
+| uname.version       | #1 SMP Sun Jan 10 15:06:54 PST 2016                              |
+| user                | benchmark                                                        |
++---------------------+------------------------------------------------------------------+
 
++-----------------------------+----------+--------+-------+---------------------+-------+-----------+-----------+-------+-------------------------------------+
+| Name                        | Status   |   Time |   Sum | Start               | tag   | Node      | User      | OS    | Version                             |
+|-----------------------------+----------+--------+-------+---------------------+-------+-----------+-----------+-------+-------------------------------------|
+| main/eigenfaces_upload_http | ok       |    0.3 |   0.3 | 2020-12-11 23:06:16 |       | localhost | benchmark | Linux | #1 SMP Sun Jan 10 15:06:54 PST 2016 |
++-----------------------------+----------+--------+-------+---------------------+-------+-----------+-----------+-------+-------------------------------------+
+
+# csv,timer,status,time,sum,start,tag,uname.node,user,uname.system,platform.version
+# csv,main/eigenfaces_upload_http,ok,0.3,0.3,2020-12-11 23:06:16,,localhost,benchmark,Linux,#1 SMP Sun Jan 10 15:06:54 PST 2016
+```
+```
+curl https://us-east1-anthony-orlowski.cloudfunctions.net/eigenfaces_predict_http?id=1
+```
+```
+['George W Bush']
++---------------------+------------------------------------------------------------------+
+| Attribute           | Value                                                            |
+|---------------------+------------------------------------------------------------------|
+| BUG_REPORT_URL      | "https://bugs.launchpad.net/ubuntu/"                             |
+| DISTRIB_CODENAME    | bionic                                                           |
+| DISTRIB_DESCRIPTION | "Ubuntu 18.04.5 LTS"                                             |
+| DISTRIB_ID          | Ubuntu                                                           |
+| DISTRIB_RELEASE     | 18.04                                                            |
+| HOME_URL            | "https://www.ubuntu.com/"                                        |
+| ID                  | ubuntu                                                           |
+| ID_LIKE             | debian                                                           |
+| NAME                | "Ubuntu"                                                         |
+| PRETTY_NAME         | "Ubuntu 18.04.5 LTS"                                             |
+| PRIVACY_POLICY_URL  | "https://www.ubuntu.com/legal/terms-and-policies/privacy-policy" |
+| SUPPORT_URL         | "https://help.ubuntu.com/"                                       |
+| UBUNTU_CODENAME     | bionic                                                           |
+| VERSION             | "18.04.5 LTS (Bionic Beaver)"                                    |
+| VERSION_CODENAME    | bionic                                                           |
+| VERSION_ID          | "18.04"                                                          |
+| cpu_count           | 2                                                                |
+| mem.active          | 158.8 MiB                                                        |
+| mem.available       | 1.8 GiB                                                          |
+| mem.free            | 1.8 GiB                                                          |
+| mem.inactive        | 19.7 MiB                                                         |
+| mem.percent         | 8.7 %                                                            |
+| mem.total           | 2.0 GiB                                                          |
+| mem.used            | 139.0 MiB                                                        |
+| platform.version    | #1 SMP Sun Jan 10 15:06:54 PST 2016                              |
+| python              | 3.8.5 (default, Sep 14 2020, 07:13:57)                           |
+|                     | [GCC 7.5.0]                                                      |
+| python.pip          | 20.1.1                                                           |
+| python.version      | 3.8.5                                                            |
+| sys.platform        | linux                                                            |
+| uname.machine       | x86_64                                                           |
+| uname.node          | localhost                                                        |
+| uname.processor     | x86_64                                                           |
+| uname.release       | 4.4.0                                                            |
+| uname.system        | Linux                                                            |
+| uname.version       | #1 SMP Sun Jan 10 15:06:54 PST 2016                              |
+| user                | benchmark                                                        |
++---------------------+------------------------------------------------------------------+
+
++------------------------------+----------+--------+-------+---------------------+-------+-----------+-----------+-------+-------------------------------------+
+| Name                         | Status   |   Time |   Sum | Start               | tag   | Node      | User      | OS    | Version                             |
+|------------------------------+----------+--------+-------+---------------------+-------+-----------+-----------+-------+-------------------------------------|
+| main/eigenfaces_predict_http | ok       |  0.912 | 0.912 | 2020-12-11 23:06:50 |       | localhost | benchmark | Linux | #1 SMP Sun Jan 10 15:06:54 PST 2016 |
++------------------------------+----------+--------+-------+---------------------+-------+-----------+-----------+-------+-------------------------------------+
+
+# csv,timer,status,time,sum,start,tag,uname.node,user,uname.system,platform.version
+# csv,main/eigenfaces_predict_http,ok,0.912,0.912,2020-12-11 23:06:50,,localhost,benchmark,Linux,#1 SMP Sun Jan 10 15:06:54 PST 2016
 ```
 
 #### Get function information (URL) and Delete Functions
