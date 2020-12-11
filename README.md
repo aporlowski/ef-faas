@@ -215,6 +215,7 @@ gcloud functions deploy eigenfaces_predict_http --set-env-vars USER=benchmark --
 ```
 
 #### Interact With Functions
+Here we tell the AI service to download remote image data and store it in cloud storage. An ACK and a benchmark are returned.
 
 ```
 curl https://us-east1-anthony-orlowski.cloudfunctions.net/eigenfaces_download_data_http?id=1
@@ -273,12 +274,101 @@ Data downloaded as lfw-funneled.tgz
 # csv,timer,status,time,sum,start,tag,uname.node,user,uname.system,platform.version
 # csv,main/eigenfaces_download_data_http,ok,97.143,97.143,2020-12-11 23:00:53,,localhost,benchmark,Linux,#1 SMP Sun Jan 10 15:06:54 PST 2016
 ```
+
+Here we tell the AI server to fetch the training data, train a model, and store it in cloud storage. Model training results and a benchmark are returned.
 ```
 curl https://us-east1-anthony-orlowski.cloudfunctions.net/eigenfaces_train_http?id=1
 ```
 ```
+Total dataset size:
+n_samples: 1288
+n_features: 1850
+n_classes: 7
+Extracting the top 150 eigenfaces from 966 faces
+done in 0.591s
+Projecting the input data on the eigenfaces orthonormal basis
+done in 0.084s
+Fitting the classifier to the training set
+done in 61.893s
+Best estimator found by grid search:
+SVC(C=1000.0, class_weight='balanced', gamma=0.005)
+Predicting people's names on the test set
+done in 0.098s
+                   precision    recall  f1-score   support
+
+     Ariel Sharon       0.67      0.46      0.55        13
+     Colin Powell       0.81      0.87      0.84        60
+  Donald Rumsfeld       0.94      0.63      0.76        27
+    George W Bush       0.81      0.98      0.89       146
+Gerhard Schroeder       0.95      0.80      0.87        25
+      Hugo Chavez       1.00      0.47      0.64        15
+       Tony Blair       1.00      0.75      0.86        36
+
+         accuracy                           0.84       322
+        macro avg       0.88      0.71      0.77       322
+     weighted avg       0.86      0.84      0.84       322
+
+[[  6   2   0   5   0   0   0]
+ [  1  52   0   7   0   0   0]
+ [  1   2  17   7   0   0   0]
+ [  0   3   0 143   0   0   0]
+ [  0   1   0   4  20   0   0]
+ [  0   3   0   4   1   7   0]
+ [  1   1   1   6   0   0  27]]
+
++---------------------+------------------------------------------------------------------+
+| Attribute           | Value                                                            |
+|---------------------+------------------------------------------------------------------|
+| BUG_REPORT_URL      | "https://bugs.launchpad.net/ubuntu/"                             |
+| DISTRIB_CODENAME    | bionic                                                           |
+| DISTRIB_DESCRIPTION | "Ubuntu 18.04.5 LTS"                                             |
+| DISTRIB_ID          | Ubuntu                                                           |
+| DISTRIB_RELEASE     | 18.04                                                            |
+| HOME_URL            | "https://www.ubuntu.com/"                                        |
+| ID                  | ubuntu                                                           |
+| ID_LIKE             | debian                                                           |
+| NAME                | "Ubuntu"                                                         |
+| PRETTY_NAME         | "Ubuntu 18.04.5 LTS"                                             |
+| PRIVACY_POLICY_URL  | "https://www.ubuntu.com/legal/terms-and-policies/privacy-policy" |
+| SUPPORT_URL         | "https://help.ubuntu.com/"                                       |
+| UBUNTU_CODENAME     | bionic                                                           |
+| VERSION             | "18.04.5 LTS (Bionic Beaver)"                                    |
+| VERSION_CODENAME    | bionic                                                           |
+| VERSION_ID          | "18.04"                                                          |
+| cpu_count           | 2                                                                |
+| mem.active          | 736.4 MiB                                                        |
+| mem.available       | 1.3 GiB                                                          |
+| mem.free            | 1.3 GiB                                                          |
+| mem.inactive        | 21.0 MiB                                                         |
+| mem.percent         | 37.0 %                                                           |
+| mem.total           | 2.0 GiB                                                          |
+| mem.used            | 179.6 MiB                                                        |
+| platform.version    | #1 SMP Sun Jan 10 15:06:54 PST 2016                              |
+| python              | 3.8.5 (default, Sep 14 2020, 07:13:57)                           |
+|                     | [GCC 7.5.0]                                                      |
+| python.pip          | 20.1.1                                                           |
+| python.version      | 3.8.5                                                            |
+| sys.platform        | linux                                                            |
+| uname.machine       | x86_64                                                           |
+| uname.node          | localhost                                                        |
+| uname.processor     | x86_64                                                           |
+| uname.release       | 4.4.0                                                            |
+| uname.system        | Linux                                                            |
+| uname.version       | #1 SMP Sun Jan 10 15:06:54 PST 2016                              |
+| user                | benchmark                                                        |
++---------------------+------------------------------------------------------------------+
+
++----------------------------+----------+---------+---------+---------------------+-------+-----------+-----------+-------+-------------------------------------+
+| Name                       | Status   |    Time |     Sum | Start               | tag   | Node      | User      | OS    | Version                             |
+|----------------------------+----------+---------+---------+---------------------+-------+-----------+-----------+-------+-------------------------------------|
+| main/eigenfaces_train_http | ok       | 153.425 | 153.425 | 2020-12-11 23:04:58 |       | localhost | benchmark | Linux | #1 SMP Sun Jan 10 15:06:54 PST 2016 |
++----------------------------+----------+---------+---------+---------------------+-------+-----------+-----------+-------+-------------------------------------+
+
+# csv,timer,status,time,sum,start,tag,uname.node,user,uname.system,platform.version
+# csv,main/eigenfaces_train_http,ok,153.425,153.425,2020-12-11 23:04:58,,localhost,benchmark,Linux,#1 SMP Sun Jan 10 15:06:54 PST 2016
 
 ```
+Here we upload an image, example_image.jpg, from our local dir. It is stored in cloud storage. An ACK and benchmark are returned.
 ```
 curl -F example_image.jpg=@example_image.jpg  https://us-east1-anthony-orlowski.cloudfunctions.net/eigenfaces_upload_http?id=1
 ```
@@ -336,6 +426,7 @@ File 1example_image.jpg uploaded.
 # csv,timer,status,time,sum,start,tag,uname.node,user,uname.system,platform.version
 # csv,main/eigenfaces_upload_http,ok,0.3,0.3,2020-12-11 23:06:16,,localhost,benchmark,Linux,#1 SMP Sun Jan 10 15:06:54 PST 2016
 ```
+Here we run the predict function (image is hardcoded at the moment, but easy to implment). The predicted label for the image ('George W Bush') and a benchmark are returned.
 ```
 curl https://us-east1-anthony-orlowski.cloudfunctions.net/eigenfaces_predict_http?id=1
 ```
@@ -400,4 +491,12 @@ gcloud functions describe eigenfaces_download_data_http
 gcloud functions delete eigenfaces_download_data_http
 ```
 
-
+#### To run the benchmark tests
+Benchmark output is stored in script output.
+```
+python test.py 1gb
+```
+#### To generate graphs from the benchmark script output
+```
+python graph.py
+```
