@@ -78,7 +78,7 @@ for test, df in graphs:
     plt.ylabel("Seconds")
     plt.title(f"{test} Time")
     plt.xticks(ind, labels)
-    plt.savefig(f'{test}_graph.png')
+    plt.savefig(f'{test}_graph.svg')
     plt.show()
 
 #----------------------GRAPH Set 2----------------------------
@@ -116,6 +116,9 @@ for test, df in graphs:
     plt.ylabel("Seconds")
     plt.title(f"{test} Time")
     plt.xticks(ind, labels)
+    if test == 'Train':
+        fig = plt.gcf()
+        fig.set_size_inches(12, 6.5)
     plt.savefig(f'{test}_platforms_graph.png')
     plt.show()
 
