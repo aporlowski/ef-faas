@@ -1,4 +1,4 @@
-# Benchmarking AI Services with Function-as-a-Service Hosting
+# Benchmarking AI Services on Function-as-a-Service Hosting
 
 NOTE:
 > This document is maintained at:
@@ -89,6 +89,8 @@ We expect functions to run faster on the variant with greater resources. Interes
 
 ## Results
 
+In Figure 
+
 ![Train FaaS](https://github.com/aporlowski/ef-faas/raw/main/images/Train_graph.png)
 
 **Figure 1:** Train function runtime for cloud function with various conditions.
@@ -156,8 +158,10 @@ We expect functions to run faster on the variant with greater resources. Interes
 | google   | client  |        | upload  |   0.31 |   0.18 |   0.73 |  0.18 |
 
 ## Limitations
+This work focuses on generating benchmark results to compare to [1], thus it does not yet implement a fully generealized EigenfacesSVM service. There are some features of the functions that need to be completed for a more generalized service that does more than the Scikit-learn example. As it stands the functions operate on one specific data set for hte donwload function, and one specific image for the predict funciton. The upload function can upload arbitary images. Extending the code to be a full service will require additional argument passing and processing and for the predict and download funciton. This limits do not detract from the benchmark validity, simply the generalized use of the facial recognition service. 
 
 ## Acknowledgements
+We like to thank Grego von Laszesski, Richard Otten, Reilly Markowitz, Sunny Gandhi, Adam Chai, Caleb Wilson, and Geoffry C. Fox for the prior AI service generation and benchmarking that this work is based on. 
 
 ## References
 
