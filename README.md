@@ -106,15 +106,19 @@ In Figure 5 we show the runtime of the upload function under the various cloud f
 
 **Figure 5:** Predict function runtime for cloud function with various conditions.
 
+In Figure 6 we show the tuntime of the train function compared to the results from [1]. Machine specifications from [1] are shown in Table 2. The bars show the average the rials, and the error bars show the standard deviation of the trials. We only show the server obserced runtimes as client side measurements were not measured in [1]. As predicted we peformance in the range of that measured of the two Rasbperry Pi models, and that traditional virutal machines significantly outperform the FaaS offerings. Considering we used hte highest working resource configuration available, it is surprising that Cloud Functions has such relatively low peformance. Higher resource limits will be required from Google Cloud Functions before larger AI services could consider it a possible deployment target.   
+
 ![Train Platforms](https://github.com/aporlowski/ef-faas/raw/main/images/Train_platforms_graph.png)
 
-In Figure 6 we show the tuntime of the train function compared to the results from [1]. We only show the server obserced runtimes as client side measurements were not measured in [1]. As predicted we peformance in the range of that measured of the two Rasbperry Pi models, and that traditional virutal machines significantly outperform the FaaS offerings. Overall, the  
-
 **Figure 6:** Server-side train function runtime for cloud function compared with other platforms.
+
+In Figure 7 we show the runtime of the upload funciton compared to results from [1]. he bars show the average the rials, and the error bars show the standard deviation of the trials. In [1] the cloud VMs were the only remotely deployed services, so from a client perspective, we can only compare the FaaS to the cloud VMs. In [1] we identified that the network round-trip-time was the dominate componenent of the function runtime. Here we obserce the FaaS functions perform signifacntly worse despite having similar network round-trip-times, as all clouds and FaaS functions were deployed to east cost data centers and access from the same remote network. This graph shows warm-start functions are not a significant enough improvement for AI services that desire to decrease latency.
 
 ![Upload Platforms](https://github.com/aporlowski/ef-faas/raw/main/images/Upload_platforms_graph.png)
 
 **Figure 7:** Client-side upload function runtime for cloud function compared with other platforms.
+
+In Figure 8 we show the runtime of the upload funciton compared to results from [1]. The bars show the average the rials, and the error bars show the standard deviation of the trials. This figure provides us further confirmation of the observations made in the discussion of Figure 7.
 
 ![Predict Platforms](https://github.com/aporlowski/ef-faas/raw/main/images/Predict_platforms_graph.png)
 
