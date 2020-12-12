@@ -197,7 +197,8 @@ We like to thank Grego von Laszesski, Richard Otten, Reilly Markowitz, Sunny Gan
 [exec-env] "Cloud Functions Execution Environment | Cloud Functions Documentation." Google Cloud, 8 Dec. 2020, <https://cloud.google.com/functions/docs/concepts/exec>.
 [storage-pricing] "Cloud Storage pricing | Google Cloud." Google Cloud, 25 Nov. 2020, <https://cloud.google.com/storage/pricing#price-tables>.
 [tips] "Tips & Tricks | Cloud Functions Documentation | Google Cloud." Google Cloud, 11 Dec. 2020, <https://cloud.google.com/functions/docs/bestpractices/tips>.
-
+[cloudmesh-openapi] Gregor von Laszewski. 2020. Cloudmesh OpenAPI Repository for automaticallygenerated REST services from Python functions. Web Page.  <https://github.com/cloudmesh/cloudmesh-openapi>
+[cloudmesh] Gregor von Laszewski. 2020.  Cloudmesh Repositories.  Github. <https://github.com/cloudmesh>
 ## Appendix
 
 ### DeployEigenfacesSVM example as FAAS on GCP
