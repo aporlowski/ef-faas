@@ -53,7 +53,7 @@ GAS generator, on the other hand, provides access to a wide range of servers (Wi
 ### Development Environment and Prerequisite Knowledge
 Developing an AI service using cloud functions comes with some prerequisite knoweldge including: utilizng speficing REST frameworks (like Flask's request objects), utilizing specific storage APIs (like google.cloud.storage), and, if desired, HTML and other GUI presentation langauges.
 
-In contrast, GAS significantly reduces these specific knowledgerequirements. As previously discussed it supports serverful deployment methods that do not require external storage services. It uses OpenAPI to automatically generate a self documenting API and web application presentation of the service hosted by a Flask web server. The developer simple provides the python function code, and the GAS generator turns it into a web app. This signifacnly increase the ability of AI domain experts to share thier work with minmal effort. 
+In contrast, GAS significantly reduces these specific knowledgerequirements. As previously discussed it supports serverful deployment methods that do not require external storage services. It uses OpenAPI to automatically generate a self documenting API and web application presentation of the service hosted by a Flask web server. The developer simple provides the python function code, and the GAS generator turns it into a web app. This signifacnly increase the ability of AI domain experts to share thier work with minmal effort. See Figure 9 in the Appendix for an example of the auto-generated GUI. In a FaaS deployment, the developer would be on the hook to make thier own. For this project I did not implement a GUI.
 
 Developing and debugging a cloud function can be difficult becuas the function has to go through a time consuming deployment process before it can be accessed and logs checked for errors and output. Google CLoud Functions does provide instructions on setting up a local development environment, but this is a more complicated development environment setup than that provided by cloudmesh-openapi [local dev]. In contrast GAS generates sevices can be locally developed directly on the same platfrom they will be hosted on.
 
@@ -139,25 +139,25 @@ In Figure 8 we show the runtime of the upload funciton compared to results from 
 
 | size     | party   | type   | test    |   mean |    min |    max |   std |
 |:---------|:--------|:-------|:--------|-------:|-------:|-------:|------:|
-| 1gb      | client  | cold   | predict |   7.27 |   2.14 |   9.12 |  0.26 |
-| 1gb      | client  | warm   | predict |   3.92 |   0.64 |   6.16 |  0.29 |
-| 1gb      | server  | cold   | predict |   0.7  |   0.52 |   0.92 |  0.02 |
-| 1gb      | server  | warm   | predict |   0.57 |   0.34 |   1.46 |  0.03 |
-| 2gb      | client  | cold   | predict |   7.08 |   1.18 |   8.09 |  0.24 |
-| 2gb      | client  | warm   | predict |   3.64 |   0.48 |   5.46 |  0.32 |
-| 2gb      | server  | cold   | predict |   0.63 |   0.55 |   0.75 |  0.01 |
-| 2gb      | server  | warm   | predict |   0.55 |   0.27 |   0.7  |  0.02 |
+| 1gb      | client  | cold   | predict |   7.27 |   2.14 |   9.12 |  1.44 |
+| 1gb      | client  | warm   | predict |   3.92 |   0.64 |   6.16 |  1.6  |
+| 1gb      | server  | cold   | predict |   0.7  |   0.52 |   0.92 |  0.1  |
+| 1gb      | server  | warm   | predict |   0.57 |   0.34 |   1.46 |  0.19 |
+| 2gb      | client  | cold   | predict |   7.08 |   1.18 |   8.09 |  1.31 |
+| 2gb      | client  | warm   | predict |   3.64 |   0.48 |   5.46 |  1.75 |
+| 2gb      | server  | cold   | predict |   0.63 |   0.55 |   0.75 |  0.05 |
+| 2gb      | server  | warm   | predict |   0.55 |   0.27 |   0.7  |  0.12 |
 | aws      | client  |        | predict |   0.4  |   0.26 |   0.8  |  0.18 |
 | azure    | client  |        | predict |   0.36 |   0.24 |   0.6  |  0.13 |
 | google   | client  |        | predict |   0.36 |   0.27 |   0.82 |  0.16 |
-| 1gb      | client  | cold   | train   | 129.38 | 112.51 | 178.07 |  2.92 |
-| 1gb      | client  | warm   | train   | 123.23 |  94.06 | 183.9  |  2.81 |
-| 1gb      | server  | cold   | train   | 123.93 | 107.72 | 171.5  |  2.96 |
-| 1gb      | server  | warm   | train   | 119.23 |  93.67 | 179.99 |  2.75 |
-| 2gb      | client  | cold   | train   | 131.19 | 113.92 | 171.67 |  2.29 |
-| 2gb      | client  | warm   | train   | 118.33 |  61.43 | 138.82 |  3.04 |
-| 2gb      | server  | cold   | train   | 125.74 | 110.26 | 164.44 |  2.16 |
-| 2gb      | server  | warm   | train   | 114.8  |  61.22 | 135.2  |  2.89 |
+| 1gb      | client  | cold   | train   | 129.38 | 112.51 | 178.07 | 16    |
+| 1gb      | client  | warm   | train   | 123.23 |  94.06 | 183.9  | 15.37 |
+| 1gb      | server  | cold   | train   | 123.93 | 107.72 | 171.5  | 16.22 |
+| 1gb      | server  | warm   | train   | 119.23 |  93.67 | 179.99 | 15.06 |
+| 2gb      | client  | cold   | train   | 131.19 | 113.92 | 171.67 | 12.56 |
+| 2gb      | client  | warm   | train   | 118.33 |  61.43 | 138.82 | 16.65 |
+| 2gb      | server  | cold   | train   | 125.74 | 110.26 | 164.44 | 11.85 |
+| 2gb      | server  | warm   | train   | 114.8  |  61.22 | 135.2  | 15.83 |
 | aws      | server  |        | train   |  35.72 |  34.91 |  46.5  |  1.73 |
 | azure    | server  |        | train   |  40.28 |  35.3  |  47.5  |  3.32 |
 | docker   | server  |        | train   |  54.72 |  54.72 |  54.72 |  0    |
@@ -165,14 +165,14 @@ In Figure 8 we show the runtime of the upload funciton compared to results from 
 | mac book | server  |        | train   |  33.82 |  33.82 |  33.82 |  0    |
 | pi 3b+   | server  |        | train   | 222.61 | 208.56 | 233.48 |  8.4  |
 | pi 4     | server  |        | train   |  88.59 |  87.83 |  89.35 |  0.32 |
-| 1gb      | client  | cold   | upload  |   5.97 |   1.42 |   7.67 |  0.23 |
-| 1gb      | client  | warm   | upload  |   4.18 |   0.34 |   7.05 |  0.38 |
-| 1gb      | server  | cold   | upload  |   0.2  |   0.14 |   0.42 |  0.01 |
-| 1gb      | server  | warm   | upload  |   0.17 |   0.09 |   0.31 |  0.01 |
-| 2gb      | client  | cold   | upload  |   4.96 |   0.9  |   5.97 |  0.16 |
-| 2gb      | client  | warm   | upload  |   2.93 |   0.31 |   4.97 |  0.33 |
-| 2gb      | server  | cold   | upload  |   0.17 |   0.13 |   0.23 |  0.01 |
-| 2gb      | server  | warm   | upload  |   0.13 |   0.08 |   0.16 |  0.01 |
+| 1gb      | client  | cold   | upload  |   5.97 |   1.42 |   7.67 |  1.24 |
+| 1gb      | client  | warm   | upload  |   4.18 |   0.34 |   7.05 |  2.1  |
+| 1gb      | server  | cold   | upload  |   0.2  |   0.14 |   0.42 |  0.06 |
+| 1gb      | server  | warm   | upload  |   0.17 |   0.09 |   0.31 |  0.05 |
+| 2gb      | client  | cold   | upload  |   4.96 |   0.9  |   5.97 |  0.85 |
+| 2gb      | client  | warm   | upload  |   2.93 |   0.31 |   4.97 |  1.82 |
+| 2gb      | server  | cold   | upload  |   0.17 |   0.13 |   0.23 |  0.03 |
+| 2gb      | server  | warm   | upload  |   0.13 |   0.08 |   0.16 |  0.03 |
 | aws      | client  |        | upload  |   0.43 |   0.16 |   1.13 |  0.21 |
 | azure    | client  |        | upload  |   0.32 |   0.15 |   0.5  |  0.15 |
 | google   | client  |        | upload  |   0.31 |   0.18 |   0.73 |  0.18 |
@@ -500,3 +500,9 @@ python test.py 1gb
 ```
 python graph.py
 ```
+
+### Example OpenAPI Generated and HOSTED GUI for AI Service
+
+![openapi-gui](https://github.com/aporlowski/ef-faas/raw/main/images/openapi-gui.png)
+
+**Figure 9:** A screenshot of the EigenfacesSVM auto-generated GUI.
