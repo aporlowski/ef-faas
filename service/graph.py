@@ -59,6 +59,7 @@ stats_df['std'] = benchmark_df.groupby(['size', 'party', 'type', 'timer'], as_in
 stats_df = stats_df.sort_values(by=['size', 'party', 'type', 'test'])
 #----------------------GRAPH Set 1----------------------------
 
+plt.style.use('seaborn-whitegrid')
 
 train_df = stats_df.loc[(stats_df['test'] == 'train')]
 upload_df = stats_df.loc[(stats_df['test'] == 'upload')]
@@ -78,7 +79,7 @@ for test, df in graphs:
     plt.ylabel("Seconds")
     plt.title(f"{test} Time")
     plt.xticks(ind, labels)
-    plt.savefig(f'{test}_graph.svg')
+    plt.savefig(f'{test}_graph.png')
     plt.show()
 
 #----------------------GRAPH Set 2----------------------------
